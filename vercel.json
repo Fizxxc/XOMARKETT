@@ -1,43 +1,48 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "api/*.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/",
-            "dest": "/public/index.html"
-        },
-        {
-            "src": "/api/(.*)",
-            "dest": "/api/$1.js"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/public/$1"
-        },
-        {
-            "src": "/login",
-            "dest": "/login.html"
-        },
-        {
-            "src": "/register",
-            "dest": "/register.html"
-        },
-        {
-            "src": "/dashboard",
-            "dest": "/dashboard.html"
-        },
-        {
-            "src": "/XOADMIN",
-            "dest": "/dashboard.html"
-        },
-        {
-            "src": "/admin",
-            "dest": "/admin-login.html"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/login",
+      "dest": "/login.html"
+    },
+    {
+      "src": "/register",
+      "dest": "/register.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/dashboard.html"
+    },
+    {
+      "src": "/XOADMIN",
+      "dest": "/dashboard.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/admin-login.html"
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*\\.(?:html|css|js|png|svg|json))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "status": 200
+    }
+  ]
 }
