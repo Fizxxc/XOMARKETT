@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - XO Market</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script defer src="/firebase.js" type="module"></script>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+  <header class="p-4 bg-blue-700 text-white text-xl font-bold text-center">Dashboard Admin</header>
+  <main class="p-6">
+    <h2 class="text-xl font-semibold mb-4 text-blue-700">Tambah Produk</h2>
+    <div class="grid gap-4 max-w-xl">
+      <input type="text" id="nama" placeholder="Nama Produk" class="px-4 py-2 border rounded">
+      <textarea id="deskripsi" placeholder="Deskripsi" class="px-4 py-2 border rounded"></textarea>
+      <input type="number" id="harga" placeholder="Harga" class="px-4 py-2 border rounded">
+      <button onclick="tambahProduk()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800">Tambah</button>
+    </div>
+
+    <h2 class="text-xl font-semibold mt-10 mb-4 text-blue-700">Produk Saat Ini</h2>
+    <div id="produkList" class="grid md:grid-cols-2 gap-4"></div>
+  </main>
+
+  <script type="module">
+    import { db, ref, push, set, remove, onValue } from '/firebase.js';
+
+    const produkRef = ref(db, 'produk');
+    const produkList = document.getElementById('produkList');
+
+    window.tambahProduk = async function () {
+      const nama = document.getElementById('nama').value;
+      const deskripsi = document.getElementById('deskripsi').value;
+      const harga = document.getElementById('harga').value;
+
+      if (!nama || !deskripsi || !harga) {
+        return Swal.fire('Gagal', 'Semua data harus diisi!', 'warning');
+      }
+
+      const newRef = push(produkRef);
+      await set(newRef, { nama, deskripsi, harga });
+      Swal.fire('Berhasil', 'Produk ditambahkan!', 'success');
+    };
+
+    onValue(produkRef, (snapshot) => {
+      produkList.innerHTML = '';
+      snapshot.forEach((child) => {
+        const item = child.val();
+        const el = document.createElement('div');
+        el.className = 'p-4 border rounded bg-blue-50';
+        el.innerHTML = `
+          <h3 class="text-lg font-bold text-blue-700">${item.nama}</h3>
+          <p>${item.deskripsi}</p>
+          <p class="font-semibold text-blue-600">Rp ${item.harga}</p>
+          <button class="mt-2 bg-red-500 text-white px-2 py-1 rounded" onclick="hapusProduk('${child.key}')">Hapus</button>
+        `;
+        produkList.appendChild(el);
+      });
+    });
+
+    window.hapusProduk = async function (id) {
+      await remove(ref(db, 'produk/' + id));
+      Swal.fire('Dihapus', 'Produk telah dihapus.', 'success');
+    }
+  </script>
+</body>
+</html>

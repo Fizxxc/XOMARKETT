@@ -1,0 +1,62 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XO Market</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script defer src="/firebase.js" type="module"></script>
+</head>
+<body class="bg-white text-gray-900 font-sans">
+  <header class="p-4 bg-blue-700 text-center text-2xl font-bold text-white shadow-md">XO Market</header>
+  <main class="p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="productList">
+      <!-- Produk akan di-generate dari Firebase -->
+    </div>
+  </main>
+  <script type="module">
+    import { db, ref, onValue } from '/firebase.js';
+
+    const productList = document.getElementById('productList');
+    const productRef = ref(db, 'produk');
+
+    onValue(productRef, (snapshot) => {
+      productList.innerHTML = '';
+      snapshot.forEach((child) => {
+        const item = child.val();
+        const card = document.createElement('div');
+        card.className = "bg-blue-50 p-4 rounded-xl shadow hover:scale-105 transition transform duration-300";
+        card.innerHTML = `
+          <h2 class="text-xl font-bold text-blue-800">${item.nama}</h2>
+          <p class="my-2 text-gray-700">${item.deskripsi}</p>
+          <p class="text-blue-600 font-semibold">Rp ${item.harga}</p>
+          <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800" onclick="beli('${child.key}')">Beli</button>
+        `;
+        productList.appendChild(card);
+      });
+    });
+
+    window.beli = async function (id) {
+      const user = localStorage.getItem('user');
+      if (!user) return Swal.fire('Oops', 'Silakan login terlebih dahulu.', 'warning');
+      try {
+        const res = await fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ produkId: id, user })
+        });
+        const result = await res.json();
+        if (res.ok) {
+          Swal.fire('Sukses', result.message || 'Pesanan berhasil dikirim!', 'success');
+        } else {
+          Swal.fire('Gagal', result.error || 'Terjadi kesalahan saat memesan.', 'error');
+        }
+      } catch (err) {
+        Swal.fire('Error', 'Tidak dapat menghubungi server.', 'error');
+      }
+    }
+  </script>
+</body>
+</html>
