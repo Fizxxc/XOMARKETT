@@ -1,43 +1,63 @@
 {
-    "version": 2,
-    "builds": [
-        {
-            "src": "api/*.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/api/(.*)",
-            "dest": "/api/$1.js"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/public/$1"
-        },
-        {
-            "src": "/",
-            "dest": "/public/index.html"
-        },
-        {
-            "src": "/login",
-            "dest": "/public/login.html"
-        },
-        {
-            "src": "/register",
-            "dest": "/public/register.html"
-        },
-        {
-            "src": "/dashboard",
-            "dest": "/public/dashboard.html"
-        },
-        {
-            "src": "/XOADMIN",
-            "dest": "/public/dashboard.html"
-        },
-        {
-            "src": "/admin",
-            "dest": "/public/admin-login.html"
-        }
-    ]
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/*.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.js"
+    },
+    {
+      "src": "/",
+      "dest": "/public/index.html"
+    },
+    {
+      "src": "/index",
+      "dest": "/public/index.html"
+    },
+    {
+      "src": "/login",
+      "dest": "/public/login.html"
+    },
+    {
+      "src": "/register",
+      "dest": "/public/register.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/public/dashboard.html"
+    },
+    {
+      "src": "/XOADMIN",
+      "dest": "/public/dashboard.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/public/admin-login.html"
+    },
+    {
+      "src": "/admin-dashboard",
+      "dest": "/public/admin-dashboard.html"
+    },
+    {
+      "src": "/tambah-produk",
+      "dest": "/public/admin-tambah.html"
+    },
+    {
+      "src": "/edit-produk",
+      "dest": "/public/admin-edit.html"
+    },
+    {
+      "src": "/pesanan",
+      "dest": "/public/admin-pesanan.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ]
 }
