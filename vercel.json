@@ -1,6 +1,28 @@
 {
-  "routes": [
-    { "src": "/api/(.*)", "dest": "/api/$1.js" },
-    { "src": "/(.*)", "dest": "/public/index.html" }
-  ]
+    "routes": [
+        {
+            "src": "/api/(.*)",
+            "dest": "/api/$1.js"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/public/index.html"
+        },
+        {
+            "src": "/login",
+            "dest": "/public/login.html"
+        },
+        {
+            "src": "/register",
+            "dest": "/public/register.html"
+        },
+        {
+            "src": "/XOADMIN",
+            "dest": "/public/dashboard.html"
+        },
+        {
+            "src": "/admin",
+            "dest": "/public/admin-login.html"
+        }
+    ]
 }
